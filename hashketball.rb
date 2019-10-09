@@ -217,8 +217,8 @@ end
 
 def most_points_scored
   game_hash.each do |place, team|
-    team.each do |attribute, data|
-      if attribute == :players
+    team[:players].each do |attribute, data|
+      # if attribute == :players
         most = 0 
         name = " " 
         data.each do |player|

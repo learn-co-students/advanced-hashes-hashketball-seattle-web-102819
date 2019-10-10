@@ -119,7 +119,6 @@ def num_points_scored(players_name)
         data.each do |player|
           if player[:player_name] == players_name
             return player[:points]
-              binding.pry
           end
         end
       end
@@ -233,13 +232,72 @@ def most_points_scored
   return name
 end
 
-def winning_team(data)
-  score1 = data[:home][:players].sum {|k, v| v[:points]}
-  score2 = data[:away][:players].sum {|a, b| b[:points]}
-  if score1 > score2
-    return "Brooklyn Nets"
-  else 
-    return "Charlotte Hornets"
+# def winning_team
+#   score1 = game_hash[:home][:players].sum{|k, v| v[:points]}
+#   score2 = game_hash[:away][:players].sum{|k2, v2| v2[:points]}
+#     if score1 > score2
+#       return "Brooklyn Nets"
+#     else 
+#       return "Charlotte Hornets"
+#     end
+# end
+
+def winning_team
+  score1 = []
+  score2 = []
+  game_hash.each do |place, team|
+    if team[:team_name] == "Brooklyn Nets"
+      team.each do |attribute, data|
+        if attribute == :players
+          data.each do |player|
+            score1 << player[:points]
+          end
+        end
+      end
+    else 
+      score2 << player[:points]
+    end
+    if score1.sum > score2.sum
+      return "Brooklyn Nets"
+    else 
+      return "Charlotte Hornets"
+    end
+  end
+end
+
+def player_with_longest_name
+  name = []
+  game_hash.each do |place, team|
+    team.each do |attribute, data|
+      if attribute == :players
+        data.each do |player|
+          if player[:player_name].length > name.length
+            name = player[:player_name]
+          end
+        end
+      end
+    end
+  end
+  return name
+end
+
+def long_name_steals_a_ton? 
+  steals = 0
+  name = ""
+  game_hash.each do |place, team|
+    team.each do |attribute, data|
+      if attribute == :players
+        data.each do |player|
+          if player[:steals] > steals
+            steals = player[:steals]
+            name = player[:player_name]
+          end
+        end
+      end
+    end
+  end
+  if player_with_longest_name == name
+    return true
   end
 end
           

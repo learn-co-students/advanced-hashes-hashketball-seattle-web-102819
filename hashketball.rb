@@ -198,38 +198,48 @@ def player_stats(players_name)
 end
 
 def big_shoe_rebounds
+  largest = 0 
+  rebounds = 0
   game_hash.each do |place, team|
     team.each do |attribute, data|
       if attribute == :players
-        largest = 0 
-        rebounds = 0
         data.each do |player|
           if player[:shoe] > largest 
             largest = player[:shoe]
             rebounds = player[:rebounds]
           end
         end
-        return rebounds
       end
     end
   end
+  return rebounds
 end
 
 def most_points_scored
+  most = 0 
+  name = '' 
   game_hash.each do |place, team|
-    team[:players].each do |attribute, data|
-      # if attribute == :players
-        most = 0 
-        name = " " 
+    team.each do |attribute, data|
+      if attribute == :players
         data.each do |player|
           if player[:points] > most
             most = player[:points]
             name = player[:player_name]
           end
         end
-        return name
       end
     end
   end
+  return name
+end
 
+def winning_team(data)
+  score1 = data[:home][:players].sum {|k, v| v[:points]}
+  score2 = data[:away][:players].sum {|a, b| b[:points]}
+  if score1 > score2
+    return "Brooklyn Nets"
+  else 
+    return "Charlotte Hornets"
+  end
+end
           
